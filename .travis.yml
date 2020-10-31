@@ -5,7 +5,9 @@ python:
 - 3.6
 install:
   - pip install pipenv
-  - pipenv install
+  - pipenv install --dev
 
 script:
-  - pytest
+  # - pytest
+  - pipenv run coverage run -m pytest
+  - pipenv run coveralls
