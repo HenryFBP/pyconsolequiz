@@ -14,6 +14,10 @@ Quiz program with simple yml format.
     pipenv install
     pipenv shell
 
-## Running
+## Running tests
+
+    pipenv run coverage run -m pytest
+
+## Running a quiz
 
     python runQuiz.py -f quizzes/exampleQuiz.yml
