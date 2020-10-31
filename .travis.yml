@@ -3,4 +3,9 @@ dist: xenial
 language: python
 python:
 - 3.6
-script: python runQuiz.py -s -f quizzes/exampleQuiz.yml
+install:
+  - pip install pipenv
+  - pipenv install
+
+script:
+  - pytest
