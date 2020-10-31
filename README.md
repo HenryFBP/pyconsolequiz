@@ -8,6 +8,12 @@
 
 Quiz program with simple yml format.
 
+## Dependencies
+
+    pip install pipenv
+    pipenv install
+    pipenv shell
+
 ## Running
 
     python runQuiz.py -f quizzes/exampleQuiz.yml
