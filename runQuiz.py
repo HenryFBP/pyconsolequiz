@@ -13,10 +13,7 @@ QuestionTypeDict = {
 }
 
 
-
-
 QuestionTypeDictReversed = reversedDict(QuestionTypeDict)
-
 
 
 class Question:
