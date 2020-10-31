@@ -351,6 +351,7 @@ if __name__ == '__main__':
 
     # Adding optional argument
     parser.add_argument("-f", "--file", required=True, help="Quiz datafile")
+    parser.add_argument('-s', '--skipQuestions', default=False, help="Skip asking questions?", action='store_true')
 
     # Read arguments from command line
     args = parser.parse_args()
@@ -368,6 +369,8 @@ if __name__ == '__main__':
         # print(question)
 
     questionBank.randomize_question_order()
-    questionBank.run_quiz()
+
+    if not args.skipQuestions:
+        questionBank.run_quiz()
 
     exit(0)

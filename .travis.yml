@@ -3,4 +3,4 @@ dist: xenial
 language: python
 python:
 - 3.6
-script: python runQuiz.py -f quizzes/exampleQuiz.yml
+script: python runQuiz.py -s -f quizzes/exampleQuiz.yml
