@@ -1,14 +1,7 @@
-from enum import Enum
-from typing import List, Dict, Tuple
+import random
+from typing import List, Tuple
 
 ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
-
-class QuestionType(Enum):
-    FREE_RESPONSE = 0
-    MULTIPLE_CHOICE = 1
-    MATCHING = 2
-    UNKNOWN = 3
-
 
 def reversedDict(d: dict) -> dict:
     return {v: k for k, v in d.items()}
@@ -45,18 +38,11 @@ def alphaToNumeric(c: str) -> int:
     return (ord(char) - ord('a')) + 1
 
 
-assert(alphaToNumeric('a') == 1)
-assert(alphaToNumeric('b') == 2)
 
 
 def numericToAlpha(i: int) -> str:
     return chr(i + ord('a') - 1)
 
-
-assert(numericToAlpha(1) == 'a')
-assert(numericToAlpha(3) == 'c')
-assert(alphaToNumeric(numericToAlpha(20)) == 20)
-assert(numericToAlpha(alphaToNumeric('x')) == 'x')
 
 
 def validateIntegerResponse(s: str) -> bool:

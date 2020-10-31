@@ -10,7 +10,7 @@ def test_more():
 
 
 def test_loading_quiz():
-    with open('../quizzes/exampleQuiz.yml') as f:
+    with open('quizzes/exampleQuiz.yml') as f:
         quizYaml = yaml.load(f, Loader=yaml.UnsafeLoader)
 
     questionBank = QuestionBank()

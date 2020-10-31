@@ -1,17 +1,17 @@
-import yaml
-from pprint import pprint
 import argparse
-from typing import Dict, List, Union, Tuple
-import random
-from util import *
+from pprint import pprint
+from typing import Dict, Union
 
+import yaml
+
+from models import QuestionType
+from util import *
 
 QuestionTypeDict = {
     'FREE RESPONSE': QuestionType.FREE_RESPONSE,
     'MATCHING': QuestionType.MATCHING,
     'MULTIPLE CHOICE': QuestionType.MULTIPLE_CHOICE,
 }
-
 
 QuestionTypeDictReversed = reversedDict(QuestionTypeDict)
 
@@ -25,7 +25,8 @@ class Question:
 
     @staticmethod
     def validate_free_response(correct_answers: List[str], proposed_answer: str) -> bool:
-        """Given a list of correct answers and 1 proposed answer, return True if the answer exists in the list of correct answers."""
+        """Given a list of correct answers and 1 proposed answer,
+        return True if the answer exists in the list of correct answers. """
         answers_uppercase = [x.upper() for x in correct_answers]
         proposed_answer_u = proposed_answer.upper()
 
@@ -37,7 +38,8 @@ class Question:
     @staticmethod
     def validate_matching_response(correct_mappings: Dict[str, str],
                                    proposed_mappings: Dict[str, str]) -> Dict[str, str]:
-        """Given a list of proposed mappings of a matching question response, return a mapping of correct answers that were not answered correctly.
+        """Given a list of proposed mappings of a matching question response,
+        return a mapping of correct answers that were not answered correctly.
 
         If the returned mapping is empty, then all answers are correct."""
 
@@ -84,11 +86,11 @@ class Question:
             print("Type 'submit' to submit your answers.")
 
             for i in range(0, len(questions)):
-                print(f'{i+1:2d}. [{boolmap[userChoices[i]]}] {questions[i]}')
+                print(f'{i + 1:2d}. [{boolmap[userChoices[i]]}] {questions[i]}')
 
             userInput = input('[1-9]+ (ex. "20")\n > ')
 
-            if('submit'.upper() == userInput.upper()):
+            if 'submit'.upper() == userInput.upper():
 
                 correctNumber = countMatchingElements(
                     userChoices, correctChoices)
@@ -111,7 +113,7 @@ class Question:
             if validateIntegerResponse(userInput):
                 userInputNumeric = int(userInput)
 
-                if(userInputNumeric) > len(questions):
+                if (userInputNumeric) > len(questions):
                     print(f"{userInputNumeric} is too large.")
 
                 else:  # actually use their input
@@ -151,14 +153,14 @@ class Question:
 
             i = 0
             for idx in answerListPositions[0]:
-                print(f"{numericToAlpha(i+1)}: {answerLists[0][idx]}")
+                print(f"{numericToAlpha(i + 1)}: {answerLists[0][idx]}")
                 i += 1
 
             print()
 
             i = 0
             for idx in answerListPositions[1]:
-                print(f"{(i+1)}: {answerLists[1][idx]}")
+                print(f"{(i + 1)}: {answerLists[1][idx]}")
                 i += 1
 
             print()
@@ -198,7 +200,7 @@ class Question:
 
             # if they've answered all the questions,
             # see if they want to be done.
-            if(len(userChoices.keys()) == numQuestions):
+            if len(userChoices.keys()) == numQuestions:
                 print(
                     f"You've answered {numQuestions}/{numQuestions} questions.")
                 print(f"Are you ready to submit this question?")
@@ -211,7 +213,7 @@ class Question:
                     missed_correct_answers = self.validate_matching_response(
                         self.getAnswers(), self.answer)
 
-                    if(missed_correct_answers == {}):
+                    if missed_correct_answers == {}:
                         self.correct = True
                         print(
                             "You got all {n}/{n} answers correct!".format(n=numQuestions))
@@ -278,10 +280,10 @@ Type: {self.getQuestionType().name}"""
     def getTitle(self) -> str:
         return self.data['title']
 
-    def getAnswers(self) -> List:
+    def getAnswers(self) -> Union[List[str], Dict]:
         return self.data['answers']
 
-    def getMatchingAnswersAs2Lists(self) -> Tuple[List[str]]:
+    def getMatchingAnswersAs2Lists(self) -> Tuple[List[str], List[str]]:
         # pprint(self.getAnswers())
 
         answersTuple = ([], [])
@@ -291,7 +293,7 @@ Type: {self.getQuestionType().name}"""
             answersTuple[0].append(k)
             answersTuple[1].append(answers[k])
 
-        if(len(answersTuple[0]) != len(answersTuple[1])):
+        if len(answersTuple[0]) != len(answersTuple[1]):
             pprint(answersTuple)
             print(
                 f"{len(answersTuple[0])} on left hand side, {len(answersTuple[1])} on right hand side!")
@@ -320,30 +322,17 @@ class QuestionBank():
 
         self.questions = questions
 
-    def add_question(self, question: Question):
+    def addQuestion(self, question: Question):
         self.questions.append(question)
 
-    def randomize_question_order(self):
+    def randomizeQuestionOrder(self):
         random.shuffle(self.questions)
 
-    def run_quiz(self):
+    def runQuiz(self):
         for question in self.questions:
             if not question.answered:
                 question.askQuestion()
 
-
-assert(Question.validate_free_response(['cat', 'kitty'], 'CAT'))
-assert(Question.validate_matching_response(
-    {'bug': 'lots of legs',
-     'mammal': '2 legs',
-     'cell': 'no legs'},
-
-    {'bug': 'no legs',
-     'mammal': '2 legs',
-     'cell': 'no legs'}) == {
-    'bug': 'lots of legs'
-}
-)
 
 if __name__ == '__main__':
     # Initialize parser
@@ -365,12 +354,12 @@ if __name__ == '__main__':
 
     for questionData in quizYaml['questions']:
         question = Question(data=questionData)
-        questionBank.add_question(question)
+        questionBank.addQuestion(question)
         # print(question)
 
-    questionBank.randomize_question_order()
+    questionBank.randomizeQuestionOrder()
 
     if not args.skipQuestions:
-        questionBank.run_quiz()
+        questionBank.runQuiz()
 
     exit(0)
